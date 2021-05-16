@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    #text {
+      height: 70vh;
+      width: 70vw;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="text" name="text" required minlength="20" maxlength="8000" size="70">
+</body>
+<script>
+
+  //being lazy the letters will be numbers n accessed via index
+  var freqTab = [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
+      abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+      kw = [],
+      kwL,
+      inp = document.querySelector('#text');
+      txt = text.value,
+      txtL = txt.length,
+      txtArr = [];
+      // txtArr = txt.split(''); prolly not necessary when strs have indices
+
+  function genKey() {
+    kwL = Math.floor(Math.random()*(2+20)-2);
+    kw.length = kwL;
+    for (let i = 0; i < kwL; i++) {
+      let ranlet = Math.floor(Math.random()*(2+26)-2);
+      kw[i] = abc[ranlet];
+    }
+    console.log(kw);
+    cipher();
+  }
+
+  function cipher() {
+    let it = txtL/kwL;
+    let pos = 0;
+    while (pos < it) {
+      for (let f = 0; f < kwL; f++) {
+        txt[f*pos] = kw[f];
+      }
+      pos++;
+    }
+    console.log(txt);
+  }
+
+  genKey();
+
+
+</script>
+</html>
