@@ -40,44 +40,65 @@
   //being lazy the letters will be numbers n accessed via index
   var freqTab = [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
       abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+      //a0 b1 c2 d3 e4 f5 g6 h7 i8 j9 k10 l11 m12 n13 o14 p15 q16 r17 s18 t19 u20 v21 w22 x23 y24 z25
       kw = [],
       kwL,
       inp = document.querySelector('#text'),
       txt = inp.value;
 
-  txt = txt.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ");
-  //get rid of punc
+  txt = txt.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
+  //get rid of punc n uppercase (2 hell w writing all the capitalised letters as well. should research unicode must ba shortcut)
   var txtArr = txt.split('');
   txtArr = txtArr.filter(x => x !== " ");
-  //get rid of spaces
+  //get rid of spaces (could prolly do this in the replace method but i dont understand enough unicode n that was just copied from stackoverflow)
+  const txtL = txtArr.length;
 
   function genKey() {
-    kwL = Math.abs(Math.floor(Math.random()*(3+txtArr.length/3)-3));
-    kw.length = kwL;
+    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/3)+5));
+    // kw.length = kwL;
     for (let i = 0; i < kwL; i++) {
-      let ranlet = Math.abs(Math.floor(Math.random()*(0+25)-0));
+      let ranlet = Math.abs(Math.floor(Math.random()*(0-25)));
       kw[i] = abc[ranlet];
     }
     cipher();
   }
 
   function cipher() {
-    let itr = txtArr.length/kwL;
-    let pos = 0;
-    while (pos < itr) {
-      for (let f = 0; f < kwL; f++) {
-        let abi = abc.findIndex(x => x === txtArr[f]);
-        console.log(abi, abc[f]);
-      }
-      pos++;
+    //acc its like the space between kwInd and 26 is what to add not kwInd itself, since this acts as new start of abc
+    for (var i = 0; i < 5; i++) {
+      let keyInd = abc.findIndex(x => x == kw[i]);
+      let txtInd = abc.findIndex(x => x == txtArr[i]);
+      // let circ = (keyInd+txtInd)%abc.length;
+      let circ = 26-txtInd;
+      //could mayb use mod division but dont wanna divide? and f maths
+      // let subremains = 26-circ;
+      // find how far away we r to end of abc original, so that the remainder (subd not divd!) can b found
+      // let newInd = txtInd+subremains;
+      // txtArr[i] = abc[circ];
+      // let newInd = abc.findIndex(x => x == txtArr[]);
+      // console.log(keyInd, txtInd, subremains, circ, txtArr);
+      let numabc = txtInd+keyInd;
+      // To obtain a modulo in JavaScript, in place of a % n , use ((a % n ) + n ) % n
+      let newLet = ((26%numabc)+numabc)%numabc;
+      // let newLet = numabc%abc.length;
+      // let newLet = numabc-txtInd+circ;
+      //this works!! but only if a0 comes before keyInd
+      txtArr[i] = abc[newLet];
+      //adding keyInd to og indexed letter, PLUS the circ which is the amount of offset of og abc
+      console.log(kw, keyInd, txtInd, numabc, txtArr);
     }
+    // let itr = txtArr.length/kwL;
+    // let pos = 0;
+    // while (pos < itr) {
+    //   for (let f = 0; f < kwL; f++) {
+    //     let abi = abc.findIndex(x => x === txtArr[f]);
+    //     console.log(abi, abc[f]);
+    //   }
+    //   pos++;
+    // }
   }
 
   genKey();
-
-  console.log(txtArr.length, kw);
-
-
 
 </script>
 </html>
