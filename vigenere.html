@@ -55,7 +55,6 @@
 
   function genKey() {
     kwL = Math.abs(Math.floor(Math.random()*(5-txtL/3)+5));
-    // kw.length = kwL;
     for (let i = 0; i < kwL; i++) {
       let ranlet = Math.abs(Math.floor(Math.random()*(0-25)));
       kw[i] = abc[ranlet];
@@ -63,39 +62,23 @@
     cipher();
   }
 
+  var pos = 0;
+
   function cipher() {
-    //acc its like the space between kwInd and 26 is what to add not kwInd itself, since this acts as new start of abc
-    for (var i = 0; i < 5; i++) {
+    let itr = (Math.round(txtArr.length/kwL))+(txtArr.length%kwL);
+    for (var i = pos; i < pos+kwL; i++) {
       let keyInd = abc.findIndex(x => x == kw[i]);
       let txtInd = abc.findIndex(x => x == txtArr[i]);
-      // let circ = (keyInd+txtInd)%abc.length;
-      let circ = 26-txtInd;
-      //could mayb use mod division but dont wanna divide? and f maths
-      // let subremains = 26-circ;
-      // find how far away we r to end of abc original, so that the remainder (subd not divd!) can b found
-      // let newInd = txtInd+subremains;
-      // txtArr[i] = abc[circ];
-      // let newInd = abc.findIndex(x => x == txtArr[]);
-      // console.log(keyInd, txtInd, subremains, circ, txtArr);
-      let numabc = txtInd+keyInd;
-      // To obtain a modulo in JavaScript, in place of a % n , use ((a % n ) + n ) % n
-      let newLet = ((26%numabc)+numabc)%numabc;
-      // let newLet = numabc%abc.length;
-      // let newLet = numabc-txtInd+circ;
-      //this works!! but only if a0 comes before keyInd
+      let newLet = ((25-txtInd)+keyInd)%25;
+      //first find offset from new abc order starting at txtInd, then add the further offset from the keyInd, then since a number > 25 is nonsense for our mod (dude i still dk what mod rly means, remainder but fancy ig (remainder here technically since there's only positive nos? n js doesn't even havea real mod operator)) 26 alphabet, new letter's ind is acc only the remainder once abc has gone round and round again. circular arrays, how cool
       txtArr[i] = abc[newLet];
-      //adding keyInd to og indexed letter, PLUS the circ which is the amount of offset of og abc
-      console.log(kw, keyInd, txtInd, numabc, txtArr);
     }
-    // let itr = txtArr.length/kwL;
-    // let pos = 0;
-    // while (pos < itr) {
-    //   for (let f = 0; f < kwL; f++) {
-    //     let abi = abc.findIndex(x => x === txtArr[f]);
-    //     console.log(abi, abc[f]);
-    //   }
-    //   pos++;
-    // }
+    pos = pos+kwL;
+    while (pos<txtArr.length) {
+      cipher();
+    }
+    txt = txtArr.join('');
+    console.log(kw, txt, pos, itr);
   }
 
   genKey();
