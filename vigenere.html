@@ -11,21 +11,35 @@
     textarea:focus {
   	  outline: 0;
     }
-    #ctext {
+    .big-contain {
+      display: flex;
+      flex-direction: row;
+      align-items: space-between;
+    }
+    .c-container,
+    .dc-container {
+      display: flex;
+      margin-top: 10vh;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+    }
+    .ctext,
+    .dctext {
       appearance: none;
-      height: 50vh;
-      width: 25vw;
-      margin: 10vh 25vw 25vh 10vw;
+      height: 25vh;
       box-shadow: inset 0px 1px 0px 0px #8e8e8e;
       background-color: #f7f2f0;
+      margin: 2vh 2vw 2vh 2vw;
     }
-    .cipherB {
-      height: 3vh;
-      width: 5vw;
-      margin: -20vh 35vw 22vh 20vw;
+    .cipherB,
+    .dcipherB {
       box-shadow: 0px 1px 1px 0px #8e8e8e;
       background-color: #f7f2f0;
-      font-size: 12px;
+      margin-top: 2vh;
+      align-self: center;
+      width: 20%;
+      font-size: 0.8rem;
       text-align: center;
       cursor: pointer;
     }
@@ -33,38 +47,47 @@
   <title>Document</title>
 </head>
 <body>
-  <textarea type="compact" id="ctext" required minlength="5" maxlength="8000"></textarea>
-  <div class="cipherB">cipher</div>
+  <div class="big-contain">
+    <div class="c-container">
+      <textarea type="compact" class="ctext" required minlength="5" maxlength="8000"></textarea>
+      <div class="cipherB">get cipherd</div>
+    </div>
+    <div class="dc-container">
+      <textarea type="compact" class="dctext" required minlength="5" maxlength="8000"></textarea>
+      <div class="dcipherB">de-nonsensify</div>
+    </div>
+  </div>
 </body>
 <script>
 
-  //being lazy the letters will be numbers n accessed via index
-  var freqTab = [8.15,1.44,2.76,3.79,13.11,2.92,1.99,5.26,6.35,0.13,0.42,3.39,2.54, 7.10,8.00,1.98,0.12,6.83,6.10,10.47,2.46,0.92,1.54,0.17,1.98,0.08],
-      abc = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'],
+  var abc = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'],
       kw = new Array(),
       kwL,
-      inp = document.querySelector('#ctext'),
-      txt = inp.value,
-      pos = 0;
+      inp = document.querySelector('.ctext'),
+      txt = {og: inp.value, min: null, ci: null},
+      pos = 0,
+      ccl = 0;
 
-  txt = txt.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-  var txtArr = txt.split('');
-  // txtArr = txtArr.filter(x => x !== " ");
-  // mayb for ease of deciphering at first lets leave in spaces
+  txt.min = txt.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
+  var txtArr = txt.min.split('');
+  txtArr = txtArr.filter(x => x !== " ");
+  // mayb for ease of deciphering at first lets leave in spaces. abs need 2 look up unicode shiz
+  //nah but we dont wanna translate spaces 2 new letters. store their pos? reinsert them later? skip over them in cipher? space could just = space ig
 
   const txtL = txtArr.length,
         cb = document.querySelector('.cipherB');
 
   function genKey() {
-    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/5)+5));
+    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/10)+5));
+    //10 here needs to be some min range n txtL relevant var
     for (let i = 0; i < kwL; i++) {
       let ranlet = Math.abs(Math.floor(Math.random()*(0-25)));
+      //abs r necessary!! here range is obvs gonna return neg no., n above may do the same depending on if txtL/whateves is < 5
       kw[i] = abc[ranlet];
+      console.log(kw);
     }
     cipher();
   }
-
-  console.log(txt);
 
   function cipher() {
     for (var i = pos; i < kwL+pos; i++) {
@@ -73,19 +96,51 @@
       let newLet = ((26-txtInd)+keyInd)%26;
       txtArr[i] = abc[newLet];
     }
-    pos = pos+kwL;
+    pos += kwL;
     while (pos<txtArr.length) {
       cipher();
     }
-    txt = txtArr.join('')
-    inp.value = txt;
-    console.log(kw, txt, pos, txtArr.length);
+    txt.ci = txtArr.join('');
+    console.log(kw, txt.og, pos, txtArr.length);
   }
 
   cb.addEventListener('click', function() {
-    //what happens when multiple clicks / ciphers? seems like its only ciphering the keyword lol N THEN on reclick cipheres the ciphere d txt w new;y gend keyw
-    genKey();
-  })
+    if (ccl%2) {
+      cb.textContent = 'get cipherd';
+      inp.value = txt.og;
+      //what if user changes text inp between clicks? need 2 refresh og
+    } else {
+      pos = 0;
+      genKey();
+      inp.value = txt.ci;
+      cb.textContent = 'show og';
+    }
+    ccl++;
+  });
+
+  //being lazy the letters will be numbers n accessed via index
+  var freqTab = [8.15,1.44,2.76,3.79,13.11,2.92,1.99,5.26,6.35,0.13,0.42,3.39,2.54, 7.10,8.00,1.98,0.12,6.83,6.10,10.47,2.46,0.92,1.54,0.17,1.98,0.08],
+      dinp = document.querySelector('.dctext'),
+      dtxt = {og: inp.value, min: null, ci: null},
+      looksee = new Array();
+
+  dtxt.min = dtxt.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
+  var txtDarr = dtxt.min.split('');
+  txtDarr = txtDarr.filter(x => x !== " ");
+
+  const dtxtL = txtDarr.length,
+        dcb = document.querySelector('.dcipherB');
+
+  for (let i=0; i<dtxtL/3; i++) {
+    looksee[i] = new Array(3);
+  }
+
+  function fact() {
+    for (let i=0; i<dtxtL-3; i+3) {
+      looksee
+    }
+  }
+
 
 </script>
 </html>
