@@ -11,50 +11,52 @@
     textarea:focus {
   	  outline: 0;
     }
-    .oldSchoolBorder {
-      outline: 0;
-      height: 50.9vh;
-      width: 50.8vw;
-      margin: 9.8vh 25vw 25vh 24.8vw;
-      outline: 2px solid #d7d7d7;
-      z-index: -2;
-      position: absolute;
-    }
-    #text {
+    #ctext {
       appearance: none;
       height: 50vh;
-      width: 50vw;
-      margin: 10vh 25vw 25vh 25vw;
+      width: 25vw;
+      margin: 10vh 25vw 25vh 10vw;
       box-shadow: inset 0px 1px 0px 0px #8e8e8e;
       background-color: #f7f2f0;
+    }
+    .cipherB {
+      height: 3vh;
+      width: 5vw;
+      margin: -20vh 35vw 22vh 20vw;
+      box-shadow: 0px 1px 1px 0px #8e8e8e;
+      background-color: #f7f2f0;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
     }
   </style>
   <title>Document</title>
 </head>
 <body>
-  <div class="oldSchoolBorder"></div>
-  <textarea type="compact" id="text" required minlength="5" maxlength="8000"></textarea>
+  <textarea type="compact" id="ctext" required minlength="5" maxlength="8000"></textarea>
+  <div class="cipherB">cipher</div>
 </body>
 <script>
 
   //being lazy the letters will be numbers n accessed via index
-  var freqTab = [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
-      abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-      //a0 b1 c2 d3 e4 f5 g6 h7 i8 j9 k10 l11 m12 n13 o14 p15 q16 r17 s18 t19 u20 v21 w22 x23 y24 z25
-      kw = [],
+  var freqTab = [8.15,1.44,2.76,3.79,13.11,2.92,1.99,5.26,6.35,0.13,0.42,3.39,2.54, 7.10,8.00,1.98,0.12,6.83,6.10,10.47,2.46,0.92,1.54,0.17,1.98,0.08],
+      abc = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'],
+      kw = new Array(),
       kwL,
-      inp = document.querySelector('#text'),
-      txt = inp.value;
+      inp = document.querySelector('#ctext'),
+      txt = inp.value,
+      pos = 0;
 
   txt = txt.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-  //get rid of punc n uppercase (2 hell w writing all the capitalised letters as well. should research unicode must ba shortcut)
   var txtArr = txt.split('');
-  txtArr = txtArr.filter(x => x !== " ");
-  //get rid of spaces (could prolly do this in the replace method but i dont understand enough unicode n that was just copied from stackoverflow)
-  const txtL = txtArr.length;
+  // txtArr = txtArr.filter(x => x !== " ");
+  // mayb for ease of deciphering at first lets leave in spaces
+
+  const txtL = txtArr.length,
+        cb = document.querySelector('.cipherB');
 
   function genKey() {
-    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/3)+5));
+    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/5)+5));
     for (let i = 0; i < kwL; i++) {
       let ranlet = Math.abs(Math.floor(Math.random()*(0-25)));
       kw[i] = abc[ranlet];
@@ -62,26 +64,28 @@
     cipher();
   }
 
-  var pos = 0;
+  console.log(txt);
 
   function cipher() {
-    let itr = (Math.round(txtArr.length/kwL))+(txtArr.length%kwL);
-    for (var i = pos; i < pos+kwL; i++) {
-      let keyInd = abc.findIndex(x => x == kw[i]);
+    for (var i = pos; i < kwL+pos; i++) {
+      let keyInd = abc.findIndex(x => x == kw[i%kwL]);
       let txtInd = abc.findIndex(x => x == txtArr[i]);
-      let newLet = ((25-txtInd)+keyInd)%25;
-      //first find offset from new abc order starting at txtInd, then add the further offset from the keyInd, then since a number > 25 is nonsense for our mod (dude i still dk what mod rly means, remainder but fancy ig (remainder here technically since there's only positive nos? n js doesn't even havea real mod operator)) 26 alphabet, new letter's ind is acc only the remainder once abc has gone round and round again. circular arrays, how cool
+      let newLet = ((26-txtInd)+keyInd)%26;
       txtArr[i] = abc[newLet];
     }
     pos = pos+kwL;
     while (pos<txtArr.length) {
       cipher();
     }
-    txt = txtArr.join('');
-    console.log(kw, txt, pos, itr);
+    txt = txtArr.join('')
+    inp.value = txt;
+    console.log(kw, txt, pos, txtArr.length);
   }
 
-  genKey();
+  cb.addEventListener('click', function() {
+    //what happens when multiple clicks / ciphers? seems like its only ciphering the keyword lol N THEN on reclick cipheres the ciphere d txt w new;y gend keyw
+    genKey();
+  })
 
 </script>
 </html>
