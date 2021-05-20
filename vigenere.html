@@ -60,86 +60,78 @@
 </body>
 <script>
 
-  var abc = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'],
-      kw = new Array(),
+  const abc = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'],
+      freqTab = [8.15,1.44,2.76,3.79,13.11,2.92,1.99,5.26,6.35,0.13,0.42,3.39,2.54, 7.10,8.00,1.98,0.12,6.83,6.10,10.47,2.46,0.92,1.54,0.17,1.98,0.08],
+      cii = document.querySelector('.ctext'),
+      dci = document.querySelector('.dctext'),
+      cb = document.querySelector('.cipherB'),
+      dcb = document.querySelector('.dcipherB');
+
+  var kw = [],
       kwL,
-      inp = document.querySelector('.ctext'),
-      txt = {og: inp.value, min: null, ci: null},
+      c = {og: null, min: null, ci: null},
+      dc = Object.create(c),
+      ca = [],
+      dca = [],
+      rp = [],
       pos = 0,
       ccl = 0;
 
-  txt.min = txt.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-  var txtArr = txt.min.split('');
-  txtArr = txtArr.filter(x => x !== " ");
-  // mayb for ease of deciphering at first lets leave in spaces. abs need 2 look up unicode shiz
-  //nah but we dont wanna translate spaces 2 new letters. store their pos? reinsert them later? skip over them in cipher? space could just = space ig
-
-  const txtL = txtArr.length,
-        cb = document.querySelector('.cipherB');
+  function init(a, b, c) {
+    arguments[0].og = arguments[1].value;
+    arguments[0].min = arguments[0].og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
+    arguments[2] = arguments[0].min.split('');
+    arguments[2] = arguments[2].filter(x => x !== " ");
+    console.log(arguments[2]);
+  }
 
   function genKey() {
-    kwL = Math.abs(Math.floor(Math.random()*(5-txtL/10)+5));
-    //10 here needs to be some min range n txtL relevant var
+    console.log(ca);
+    kwL = Math.abs(Math.round(Math.random()*(5-ca.length/10)+5));
     for (let i = 0; i < kwL; i++) {
-      let ranlet = Math.abs(Math.floor(Math.random()*(0-25)));
-      //abs r necessary!! here range is obvs gonna return neg no., n above may do the same depending on if txtL/whateves is < 5
+      let ranlet = Math.abs(Math.round(Math.random()*(0-25)));
       kw[i] = abc[ranlet];
-      console.log(kw);
     }
     cipher();
   }
 
   function cipher() {
-    for (var i = pos; i < kwL+pos; i++) {
+    for (let i = pos; i < kwL+pos; i++) {
       let keyInd = abc.findIndex(x => x == kw[i%kwL]);
-      let txtInd = abc.findIndex(x => x == txtArr[i]);
-      let newLet = ((26-txtInd)+keyInd)%26;
-      txtArr[i] = abc[newLet];
+      let cInd = abc.findIndex(x => x == ca[i]);
+      let newLet = ((26-cInd)+keyInd)%26;
+      ca[i] = abc[newLet];
     }
     pos += kwL;
-    while (pos<txtArr.length) {
+    while (pos<ca.length) {
       cipher();
     }
-    txt.ci = txtArr.join('');
-    console.log(kw, txt.og, pos, txtArr.length);
+    c.ci = ca.join('');
   }
 
   cb.addEventListener('click', function() {
     if (ccl%2) {
       cb.textContent = 'get cipherd';
-      inp.value = txt.og;
-      //what if user changes text inp between clicks? need 2 refresh og
+      cii.value = c.og;
     } else {
       pos = 0;
+      init(c, cii, ca);
       genKey();
-      inp.value = txt.ci;
+      cii.value = c.ci;
       cb.textContent = 'show og';
     }
     ccl++;
   });
 
-  //being lazy the letters will be numbers n accessed via index
-  var freqTab = [8.15,1.44,2.76,3.79,13.11,2.92,1.99,5.26,6.35,0.13,0.42,3.39,2.54, 7.10,8.00,1.98,0.12,6.83,6.10,10.47,2.46,0.92,1.54,0.17,1.98,0.08],
-      dinp = document.querySelector('.dctext'),
-      dtxt = {og: inp.value, min: null, ci: null},
-      looksee = new Array();
-
-  dtxt.min = dtxt.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-  var txtDarr = dtxt.min.split('');
-  txtDarr = txtDarr.filter(x => x !== " ");
-
-  const dtxtL = txtDarr.length,
-        dcb = document.querySelector('.dcipherB');
-
-  for (let i=0; i<dtxtL/3; i++) {
-    looksee[i] = new Array(3);
-  }
-
-  function fact() {
-    for (let i=0; i<dtxtL-3; i+3) {
-      looksee
-    }
-  }
+  // for (let i=0; i<dcL/3; i++) {
+  //   looksee[i] = new Array(3);
+  // }
+  //
+  // function fact() {
+  //   for (let i=0; i<dcL-3; i+3) {
+  //     looksee
+  //   }
+  // }
 
 
 </script>
