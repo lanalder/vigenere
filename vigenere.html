@@ -14,7 +14,7 @@
     .big-contain {
       display: flex;
       flex-direction: row;
-      align-items: space-between;
+      align-items: indie-between;
     }
     .c-container,
     .dc-container {
@@ -69,24 +69,25 @@
 
   var kw = [],
       kwL,
-      c = {og: null, min: null, ci: null},
+      c = {og: '', min: '', ci: ''},
       dc = Object.create(c),
       ca = [],
       dca = [],
       rp = [],
+      pt = [],
+      indie = {},
       pos = 0,
       ccl = 0;
 
-  function init(a, b, c) {
-    arguments[0].og = arguments[1].value;
-    arguments[0].min = arguments[0].og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-    arguments[2] = arguments[0].min.split('');
-    arguments[2] = arguments[2].filter(x => x !== " ");
-    console.log(arguments[2]);
+  function init(cd) {
+    cd.og = (cd==c ? cii.value : dci.value);
+    cd.min = cd.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
+    cd==c ? ca = c.min.split('') : dca = dc.min.split('');
+    cd==c ? ca = ca.filter(x => x!==' ') : dca = dca.filter(x => x!==' ');
+    pos = 0;
   }
 
   function genKey() {
-    console.log(ca);
     kwL = Math.abs(Math.round(Math.random()*(5-ca.length/10)+5));
     for (let i = 0; i < kwL; i++) {
       let ranlet = Math.abs(Math.round(Math.random()*(0-25)));
@@ -99,7 +100,7 @@
     for (let i = pos; i < kwL+pos; i++) {
       let keyInd = abc.findIndex(x => x == kw[i%kwL]);
       let cInd = abc.findIndex(x => x == ca[i]);
-      let newLet = ((26-cInd)+keyInd)%26;
+      let newLet = (keyInd+cInd)%26;
       ca[i] = abc[newLet];
     }
     pos += kwL;
@@ -114,8 +115,7 @@
       cb.textContent = 'get cipherd';
       cii.value = c.og;
     } else {
-      pos = 0;
-      init(c, cii, ca);
+      init(c);
       genKey();
       cii.value = c.ci;
       cb.textContent = 'show og';
@@ -123,15 +123,63 @@
     ccl++;
   });
 
-  // for (let i=0; i<dcL/3; i++) {
-  //   looksee[i] = new Array(3);
-  // }
+  dcb.addEventListener('click', function() {
+    init(dc);
+    dci.value = dca.join('');
+    patterns();
+  });
+
+  function patterns() {
+    let r = 0;
+    let dup = {};
+    for (let i=r; i<dca.length; i++) {
+      rp[i] = dca[i]+dca[i+1]+dca[i+2];
+    }
+    rp = rp.slice(0, -2);
+    for (let i=0; i<rp.length; i++) {
+      if(dup[rp[i]]) {
+        pt.push(rp[i]);
+      }
+      dup[rp[i]] = true;
+    }
+    console.log(rp, pt);
+    gaps();
+  }
+
+  function gaps() {
+    for (let i=0; i<pt.length; i++) {
+      let m = 0;
+      indie[pt[i]] = [rp.findIndex(x => x==pt[i])];
+      let end = false;
+      while (!end) {
+        //whyyy does while loop only end after another run thro when it shouldve finished? does it evaluate cond only when it needs 2 repeat? seems lame 2 do what im ab to post loop :/
+        m++;
+        let nxt = rp.slice(indie[pt[i]][m-1]+1, -1);
+        indie[pt[i]][m] = nxt.findIndex(x => x==pt[i]);
+        end = indie[pt[i]].includes(-1);
+        indie[pt[i]][m] += indie[pt[i]][m-1]+1;
+      }
+      indie[pt[i]].splice(-1, 1);
+    }
+    // spitFacts();
+  }
+
+  // function spitFacts() {
+  //   let poss = [];
+  //   let space = [];
+  //   for (let i=0; i<dca.length/10; i++) {
+  //     //init all poss factors
+  //     poss[i] = i;
+  //   }
+  //   for (let i=0; i<pt.length; i++) {
+  //     space[i] =
+  //     for (let g=0; g<indie[pt[i]].length; g++) {
   //
-  // function fact() {
-  //   for (let i=0; i<dcL-3; i+3) {
-  //     looksee
+  //     }
   //   }
   // }
+
+
 
 
 </script>
