@@ -68,16 +68,28 @@
       dcb = document.querySelector('.dcipherB');
 
   var kw = [],
+      //keyword (ci)
       kwL,
       c = {og: '', min: '', ci: ''},
       dc = Object.create(c),
       ca = [],
       dca = [],
       rp = [],
+      //storing all the char combos (dci)
       pt = [],
+      //char patterns that repeat (dci)
       indie = {},
+      //indices for char patterns (dci)
       pos = 0,
-      ccl = 0;
+      //position in text tbciphered (ci)
+      ccl = 0,
+      //no. clicks (ci)
+      poss = new Map(),
+      //all possible factors 2 determine kw length (dci)
+      nf = 0,
+      //no. times factor applies (dci)
+      pf;
+      //probable factor ie kwl (dci)
 
   function init(cd) {
     cd.og = (cd==c ? cii.value : dci.value);
@@ -88,11 +100,12 @@
   }
 
   function genKey() {
-    kwL = Math.abs(Math.round(Math.random()*(5-ca.length/10)+5));
+    kwL = Math.abs(Math.round(Math.random()*(3-ca.length/10)+3));
     for (let i = 0; i < kwL; i++) {
       let ranlet = Math.abs(Math.round(Math.random()*(0-25)));
       kw[i] = abc[ranlet];
     }
+    console.log(kw);
     cipher();
   }
 
@@ -131,18 +144,21 @@
 
   function patterns() {
     let r = 0;
+    //just if there r no factors later on, can repeat otherwise del
     let dup = {};
     for (let i=r; i<dca.length; i++) {
       rp[i] = dca[i]+dca[i+1]+dca[i+2];
     }
     rp = rp.slice(0, -2);
     for (let i=0; i<rp.length; i++) {
-      if(dup[rp[i]]) {
+      if(dup[rp[i]]<2 && dup[rp[i]]) {
+        //so that doesn't repush repeats > 2, not a massive thing since objs skip properties alr defined? i think, but idk good 2 sort out ig
+        dup[rp[i]]++;
         pt.push(rp[i]);
+      } else {
+        dup[rp[i]] = true;
       }
-      dup[rp[i]] = true;
     }
-    console.log(rp, pt);
     gaps();
   }
 
@@ -152,7 +168,6 @@
       indie[pt[i]] = [rp.findIndex(x => x==pt[i])];
       let end = false;
       while (!end) {
-        //whyyy does while loop only end after another run thro when it shouldve finished? does it evaluate cond only when it needs 2 repeat? seems lame 2 do what im ab to post loop :/
         m++;
         let nxt = rp.slice(indie[pt[i]][m-1]+1, -1);
         indie[pt[i]][m] = nxt.findIndex(x => x==pt[i]);
@@ -160,26 +175,71 @@
         indie[pt[i]][m] += indie[pt[i]][m-1]+1;
       }
       indie[pt[i]].splice(-1, 1);
+      //a mystery as 2 why this' needed... otherwise pushes the last repeat index twice...
     }
-    // spitFacts();
+    fact();
   }
 
-  // function spitFacts() {
-  //   let poss = [];
-  //   let space = [];
-  //   for (let i=0; i<dca.length/10; i++) {
-  //     //init all poss factors
-  //     poss[i] = i;
-  //   }
-  //   for (let i=0; i<pt.length; i++) {
-  //     space[i] =
-  //     for (let g=0; g<indie[pt[i]].length; g++) {
-  //
+  function fact() {
+    //first init factor possibilities
+    for (let i=3; i<dca.length/10; i++) {
+      poss.set(i, nf);
+    }
+    for (let i=0; i<pt.length; i++) {
+      let g = Object.values(indie[pt[i]]);
+      for (let p=0; p<g.length; p++) {
+        //for all the repeats in a specific pattern
+        if (!(indie[pt[i]][g.length]-indie[pt[i]][g-1])%i) {
+          poss.set(i, nf++);
+        }
+      }
+      nf = 0;
+    }
+    console.log(indie, poss);
+    pf = Math.max(...poss.values());
+    //spread makes arr of just map vals (spread thing seems 2 only work in funcs/methods to note)
+    if (pf===1) {
+      //ie hasnt found a more common factor than any other, ie. need 2 recurse back to patterns with bigger char pattern
+    } else {
+      tableTime();
+    }
+  }
+
+  //since fact finds smallest factors first, if tableTime is unsuccesful try multiples (is that the right term??) of pf
+  // function tableTime() {
+  //   pf++;
+  //   //startin at 0 thing means rn factor seems tb 1 off actual kwl. mystery tb solved later ig as to where exactly this is coming from... big issue in terms of dividing things? we will see... is it mayb the dist not counting included chars?
+  //   let kwKeys = new Map(),
+  //       row = kwKeys.values();
+  //   for (let k=0; k<pf; k++) {
+  //     kwKeys.set(k, new Array(Math.floor(dca.length/pf)));
+  //     let n = 0;
+  //     console.log(k, dca[k], row);
+  //     for (let l=k; l<dca.length-pf-k; l+=pf) {
+  //       row[n] = dca[l];
+  //       row = Array.from(row);
+  //       kwKeys.set(k, row);
+  //       n++;
   //     }
   //   }
+  //   console.log(kwKeys, row);
   // }
 
-
+  function tableTime() {
+    pf++;
+    let kwKeys = new Array(pf);
+        n=0;
+    kwKeys.forEach((x) => {x = new Array(Math.floor(dca.length/10))});
+    console.log(kwKeys);
+    for (let k=0; k<pf; k++) {
+      // kwKeys[k] = new Array(Math.floor(dca.length/pf));
+      for (let l=k; l<dca.length-pf-k; l+=pf) {
+        kwKeys[k][n] = dca[l];
+        n++;
+      }
+    }
+    console.log(kwKeys);
+  }
 
 
 </script>
