@@ -29,21 +29,22 @@ var kw = [],
     pf;
     //probable factor ie kwl (dci)
 
-
-console.log(rp);
-
 function init(cd) {
-  cd.og = (cd==c ? cii.value : dci.value);
-  cd.min = cd.og.replace(/[^\w\s]|_/g," ").replace(/\s+/g," ").toLowerCase();
-  cd==c ? ca = c.min.split('') : dca = dc.min.split('');
-  cd==c ? ca = ca.filter(x => x!==' ') : dca = dca.filter(x => x!==' ');
+  // cd is ciphering obj (c or dc), both ways go via this
+  cd.og = (cd === c ? cii.value : dci.value);
+  console.log(cd.og);
+  // storing og txt val in cii or cdi respective 2 dirc
+  cd.min = cd.og.replace(/[^\w\s]|_/g, " ").replace(/\s+/g, " ").toLowerCase();
+
+  cd == c ? ca = c.min.split('') : dca = dc.min.split('');
+  cd == c ? ca = ca.filter((x) => x !== ' ') : dca = dca.filter((x) => x !== ' ');
   pos = 0;
 }
 
 function genKey() {
-  kwL = Math.abs(Math.round(Math.random()*(3-ca.length/10)+3));
+  kwL = Math.abs(Math.round(Math.random() * (3 - ca.length / 10) + 3));
   for (let i = 0; i < kwL; i++) {
-    let ranlet = Math.abs(Math.round(Math.random()*(0-25)));
+    let ranlet = Math.abs(Math.round(Math.random() * (0 - 25)));
     kw[i] = abc[ranlet];
   }
   console.log(kw);
@@ -51,21 +52,21 @@ function genKey() {
 }
 
 function cipher() {
-  for (let i = pos; i < kwL+pos; i++) {
-    let keyInd = abc.findIndex(x => x == kw[i%kwL]);
-    let cInd = abc.findIndex(x => x == ca[i]);
-    let newLet = (keyInd+cInd)%26;
+  for (let i = pos; i < kwL + pos; i++) {
+    let keyInd = abc.findIndex((x) => x == kw[i % kwL]);
+    let cInd = abc.findIndex((x) => x == ca[i]);
+    let newLet = (keyInd + cInd) % 26;
     ca[i] = abc[newLet];
   }
   pos += kwL;
-  while (pos<ca.length) {
+  while (pos < ca.length) {
     cipher();
   }
   c.ci = ca.join('');
 }
 
 cb.addEventListener('click', function() {
-  if (ccl%2) {
+  if (ccl % 2) {
     cb.textContent = 'get cipherd';
     cii.value = c.og;
   } else {
@@ -86,14 +87,14 @@ dcb.addEventListener('click', function() {
 
 function patterns() {
   let dup = {};
-  for (let i=0; i<dca.length; i++) {
-    rp[i] = dca[i]+dca[i+1]+dca[i+2];
+  for (let i = 0; i < dca.length; i++) {
+    rp[i] = dca[i] + dca[i + 1] + dca[i + 2];
     indie.thr = rp;
     // if (!indie.fur) {
-      rp[i] += dca[i+3];
+      rp[i] += dca[i + 3];
       indie.fur = rp;
     // } else if (!indie.fve) {
-      rp[i] += dca[i+3]+dca[i+4];
+      rp[i] += dca[i + 3] + dca[i + 4];
       indie.fve = rp;
     // }
   }
@@ -111,12 +112,12 @@ function patterns() {
 }
 
 function combos(id) {
-  rp.forEach(function(x){x=new Array('')});
+  rp.forEach((x) => {x = new Array('')});
   console.log(rp[0]);
-  for (let i=0; i<dca.length; i++) {
-    rp[0][i] = dca[i]+dca[i+1]+dca[+2];
-    rp[1][i] = rp[0][i]+dca[i+3];
-    rp[2][i] = rp[1][i]+dca[i+4];
+  for (let i = 0; i < dca.length; i++) {
+    rp[0][i] = dca[i] + dca[i + 1] + dca[ + 2];
+    rp[1][i] = rp[0][i] + dca[i + 3];
+    rp[2][i] = rp[1][i] + dca[i + 4];
   }
   rp[0].slice(0, -2);
   rp[1].slice(0, -3);
@@ -125,22 +126,22 @@ function combos(id) {
 }
 
 function cleanup(id) {
-  return id==indie.thr ? indie.thr.slice(0, -2)
-         : id==indie.fur ? indie.fur.slice(0, -3)
+  return id == indie.thr ? indie.thr.slice(0, -2)
+         : id == indie.fur ? indie.fur.slice(0, -3)
          : indie.fve.slice(0, -4);
 }
 
 function gaps() {
-  for (let i=0; i<pt.length; i++) {
+  for (let i = 0; i < pt.length; i++) {
     let m = 0;
-    indie[pt[i]] = [rp.findIndex(x => x==pt[i])];
+    indie[pt[i]] = [rp.findIndex((x) => x == pt[i])];
     let end = false;
     while (!end) {
       m++;
-      let nxt = rp.slice(indie[pt[i]][m-1]+1, -1);
-      indie[pt[i]][m] = nxt.findIndex(x => x==pt[i]);
+      let nxt = rp.slice(indie[pt[i]][m - 1] + 1, -1);
+      indie[pt[i]][m] = nxt.findIndex((x) => x == pt[i]);
       end = indie[pt[i]].includes(-1);
-      indie[pt[i]][m] += indie[pt[i]][m-1]+1;
+      indie[pt[i]][m] += indie[pt[i]][m - 1] + 1;
     }
     indie[pt[i]].splice(-1, 1);
     //a mystery as 2 why this' needed... otherwise pushes the last repeat index twice...
@@ -150,14 +151,14 @@ function gaps() {
 
 function fact() {
   //first init factor possibilities
-  for (let i=3; i<dca.length/10; i++) {
+  for (let i = 3; i < dca.length / 10; i++) {
     poss.set(i, nf);
   }
-  for (let i=0; i<pt.length; i++) {
+  for (let i = 0; i < pt.length; i++) {
     let g = Object.values(indie[pt[i]]);
-    for (let p=0; p<g.length; p++) {
+    for (let p = 0; p < g.length; p++) {
       //for all the repeats in a specific pattern
-      if (!(indie[pt[i]][g.length]-indie[pt[i]][g-1])%i) {
+      if (!(indie[pt[i]][g.length] - indie[pt[i]][g - 1]) % i) {
         poss.set(i, nf++);
       }
     }
@@ -166,7 +167,7 @@ function fact() {
   console.log(indie, poss);
   pf = Math.max(...poss.values());
   //spread makes arr of just map vals (spread thing seems 2 only work in funcs/methods to note)
-  if (pf===1) {
+  if (pf === 1) {
     //ie hasnt found a more common factor than any other, ie. need 2 recurse back to patterns with bigger char pattern
   } else {
     tableTime();
@@ -175,14 +176,14 @@ function fact() {
 
 function tableTime() {
   pf++;
-  let each = new Array(Math.floor(dca.length/pf));
+  let each = new Array(Math.floor(dca.length / pf));
   let kwKeys = new Array(pf, each, each, each);
       n=0;
   // kwKeys.forEach(function(el){el = new Array(Math.floor(dca.length/pf))});
   console.log(kwKeys);
-  for (let k=0; k<pf; k++) {
+  for (let k = 0; k < pf; k++) {
     // kwKeys[k] = new Array(Math.floor(dca.length/pf));
-    for (let l=k; l<dca.length-pf-k; l+=pf) {
+    for (let l = k; l < dca.length - pf - k; l += pf) {
       kwKeys[k][n] = dca[l];
       n++;
     }
