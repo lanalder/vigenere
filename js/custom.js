@@ -1,6 +1,6 @@
-// let v = 'DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFXKFCRG GLPFE TZMMM ZOZDE ADWVZ WMWKV GQSOH QSVHP WFKLS LEASEPWHMJ EGKPU RVSXJ XVBWV POSDE TEQTX OBZIK WCXLW NUOVJ MJCLLOEOFA ZENVM JILOW ZEKAZ EJAQD ILSWW ESGUG KTZGQ ZVRMN WTQSEOTKTK PBSTA MQVER MJEGL JQRTL GFJYG SPTZP GTACM OECBX SESCIYGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWBAWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQILIEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF';
+let v = 'DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFXKFCRG GLPFE TZMMM ZOZDE ADWVZ WMWKV GQSOH QSVHP WFKLS LEASEPWHMJ EGKPU RVSXJ XVBWV POSDE TEQTX OBZIK WCXLW NUOVJ MJCLLOEOFA ZENVM JILOW ZEKAZ EJAQD ILSWW ESGUG KTZGQ ZVRMN WTQSEOTKTK PBSTA MQVER MJEGL JQRTL GFJYG SPTZP GTACM OECBX SESCIYGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWBAWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQILIEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF';
 
-let v = 'TYWUR USHPO SLJNQ AYJLI FTMJY YZFPV EUZTS GAHTU WNSFW EEEVAMYFFD CZTMJ WSQEJ VWXTU QNANT MTIAW AOOJS HPPIN TYDDM VKQUFLGMLB XIXJU BQWXJ YQZJZ YMMZH DMFNQ VIAYE FLVZI ZQCSS AEEXVSFRDS DLBQT YDTFQ NIVKU ZPJFJ HUSLK LUBQV JULAB XYWCD IEOWHFTMXZ MMZHC AATFX YWGMF XYWZU QVPYF AIAFJ GEQCV KNATE MWGKXSMWNA NIUSH PFSRJ CEQEE VJXGG BLBQI MEYMR DSDHU UZXVV VGFXVJZXUI JLIRM RKZYY ASETY MYWWJ IYTMJ KFQQT ZFAQK IJFIP FSYAGQXZVK UZPHF ZCYOS LJNQE MVK';
+// let v = 'TYWUR USHPO SLJNQ AYJLI FTMJY YZFPV EUZTS GAHTU WNSFW EEEVAMYFFD CZTMJ WSQEJ VWXTU QNANT MTIAW AOOJS HPPIN TYDDM VKQUFLGMLB XIXJU BQWXJ YQZJZ YMMZH DMFNQ VIAYE FLVZI ZQCSS AEEXVSFRDS DLBQT YDTFQ NIVKU ZPJFJ HUSLK LUBQV JULAB XYWCD IEOWHFTMXZ MMZHC AATFX YWGMF XYWZU QVPYF AIAFJ GEQCV KNATE MWGKXSMWNA NIUSH PFSRJ CEQEE VJXGG BLBQI MEYMR DSDHU UZXVV VGFXVJZXUI JLIRM RKZYY ASETY MYWWJ IYTMJ KFQQT ZFAQK IJFIP FSYAGQXZVK UZPHF ZCYOS LJNQE MVK';
 
 // let v = 'VVQGY TVVVK ALURW FHQAC MMVLE HUCAT WFHHI PLXHV UWSCI GINCMUHNHQ RMSUI MHWZO DXTNA EKVVQ GYTVV QPHXI NWCAB ASYYM TKSZRCXWRP RFWYH XYGFI PSBWK QAMZY BXJQQ ABJEM TCHQS NAEKV VQGYTVVPCA QPBSL URQUC VMVPQ UTMML VHWDH NFIKJ CPXMY EIOCD TXBJWKQGAN';
 
@@ -141,16 +141,13 @@ let freqkey = {
     // chronologically 2.1, for each coset count how many times each letter shows up, then do the formula thing, sum, push
     let form = set26();
 
-    for (let i = 0; i < table.length - 1; i++) {
-      // whether or not data needs 2 b taken from every coset or just the 1st idk, p marginal difference either way but for now comps r too speedy 2 warrant sacrificing that extra data for performance
+    for (let i = 0; i < table.length; i++) {
       let occr = set26();
-      // counting letter rps
-      for (let j = 0; j < table[i].length - 1; j++) {
+      for (let j = 0; j < table[i].length; j++) {
         occr[omni.abc.indexOf(table[i][j])] += 1;
       }
-      // formula for IC (kwl = coset (text sample) length)
-      occr.forEach((x, i) => {
-        form[i] += ((x / kwl) * (x - 1) / (kwl - 1));
+      occr.forEach((x, l) => {
+        form[l] += (x / table[i].length) * ((x - 1) / (table[i].length - 1));
       });
     }
 
@@ -160,59 +157,50 @@ let freqkey = {
     });
 
     this.ic[0].push(kwl);
-    this.ic[1].push((icsum * 26) / (v.length / kwl));
+    this.ic[1].push(icsum / kwl);
   },
 
-  chiSqd() {
-    let set = [];
-    // fixing bad arr structure from b4 n cloning it so og ciphertxt remains; now ind1 of set = coset and ind2 = kw letter
+  chiron() {
     for (let i = 0; i < kwl; i++) {
-      set[i] = [];
-      for (let j = 0; j < kwl; j++) {
-        set[i].push(table[j][i]);
-      }
-      set[i] = this.shifty(set[i]);
-    }
-  },
+      let chi = set26();
 
-  shifty(s) {
-    let chi = [];
-    let fe = [];
+      chi = chi.map((x, l) => {
+        let fs = [];
 
-    for (let i = 0; i < 26; i++) {
-      chi.push(0);
+        let shifty = table[i].map((y) => {
+          let og = omni.abc.indexOf(y);
+          return omni.abc[Math.abs(26 + (og - l)) % 26];
+        });
 
-      s.forEach((x) => {
-        let occr = s.filter(y => y === x);
-        let l = omni.abc.indexOf(x);
+        shifty.forEach((a) => {
+          let letpos = omni.abc.indexOf(a);
+          let fe = omni.eng[letpos] / 100;
+          let occr = shifty.filter(y => y === a);
+          let dif = (occr.length / 10) - fe;
+          let top = Math.pow(dif, 2);
 
-        let diff = (occr.length / 10) - (omni.eng[l] / 100);
-        let squid = Math.pow(diff, 2);
-        // fe.push(squid / (omni.eng[l] + occr.length / 10));
-        fe.push(squid / omni.eng[l]);
+          fs.push(top / fe);
+          shifty = shifty.filter(y => y !== a);
+        });
+
+        let xsum = 0;
+        fs.forEach((y) => {
+          xsum += y;
+        });
+
+        return xsum;
       });
 
-      let xsum = 0;
-      fe.forEach((x) => {
-        xsum += x;
-      });
-      chi[i] = xsum;
-      fe = [];
+      chi.forEach((x) => {
+        // someone needs 2 take for loops away from me but lit how else would one do this...
+        let sml = chi.filter(y => y < x);
+        sml.sort((a, b) => {
+          return a - b;
+        });
 
-      s = s.map((x) => {
-        let og = omni.abc.indexOf(x);
-        return omni.abc[Math.abs((og - 1) % 26)];
+        this.chi[i] = chi.indexOf(sml[0]);
       });
     }
-    let tn = Array.from(chi);
-    tn.sort((a, b) => {
-      return a > b ? 1 : 0;
-    });
-    tn = tn.splice(0, 8);
-    for (let i = 0; i < 8; i++) {
-      tn[i] = chi.indexOf(tn[i]);
-    }
-    return tn;
   }
 };
 
@@ -229,34 +217,56 @@ function keycutter() {
     matrix();
     table = [];
   }
-  // 2.1 find biggest ICs n in it is kwl (hopefully)!
+  // 2.1 find biggest IC n with it have kwl determined (hopefully)!
   freqkey.ic[1].forEach((x, i) => {
     if (x > freqkey.bigBoyIC[2] || patterns.factors[1][i] >= freqkey.bigBoyIC[1]) {
       freqkey.bigBoyIC = [freqkey.ic[0][i], patterns.factors[1][i], x];
       // factor, occr count, ic
     }
   });
-  console.log(freqkey.bigBoyIC, freqkey.ic, patterns.factors);
-  kwl = freqkey.bigBoyIC[0][0];
+  kwl = freqkey.bigBoyIC[0];
   matrix();
-  freqkey.chiSqd();
+  freqkey.chiron();
+  // console.log(freqkey.bigBoyIC, freqkey.chi);
+
+  solve();
 }
 
 function matrix() {
   // chronologically 2.0, sets up a nice table of cosets at assumed kwl
+  let ord = [];
   for (let i = 0; i < v.length / kwl; i++) {
-  // for (let i = 0; i < kwl; i++) {
-
-    table[i] = Array.from(v.substring(i * kwl, i * kwl + kwl));
-    // for (let j = 0; j < kwl; j++) {
-    //   let og = omni.abc.indexOf(table[i][j]);
-    //   table[i][j] = omni.abc[(og + kwl) % 26];
-    // }
+    ord[i] = Array.from(v.substring(i * kwl, i * kwl + kwl));
+  }
+  // it's just sm easier 2 do this way (a string substr method thing which can create arrs from a non-linear index range?? would b nice idk)
+  for (let i = 0; i < kwl; i++) {
+    table[i] = [];
+    for (let j = 0; j < v.length / kwl; j++) {
+      table[i].push(ord[j][i]);
+    }
   }
   // condition so that having found probable kwl, new table can b made for that without repeating IC process
   if (!freqkey.bigBoyIC[0]) {
     freqkey.calcIC();
   }
+}
+
+function solve() {
+  let uc = '';
+  for (let i = 0; i < kwl; i++) {
+    table[i] = table[i].map((x) => {
+      let og = omni.abc.indexOf(x);
+      return omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26];
+    });
+  }
+
+  for (let i = 0; i < v.length / kwl; i++) {
+    for (let j = 0; j < kwl; j++) {
+      uc += table[j][i];
+    }
+  }
+
+  console.log(uc);
 }
 
 function set26() {
