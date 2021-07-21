@@ -1,4 +1,4 @@
-let v = 'DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFXKFCRG GLPFE TZMMM ZOZDE ADWVZ WMWKV GQSOH QSVHP WFKLS LEASEPWHMJ EGKPU RVSXJ XVBWV POSDE TEQTX OBZIK WCXLW NUOVJ MJCLLOEOFA ZENVM JILOW ZEKAZ EJAQD ILSWW ESGUG KTZGQ ZVRMN WTQSEOTKTK PBSTA MQVER MJEGL JQRTL GFJYG SPTZP GTACM OECBX SESCIYGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWBAWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQILIEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF';
+// let v = 'DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFXKFCRG GLPFE TZMMM ZOZDE ADWVZ WMWKV GQSOH QSVHP WFKLS LEASEPWHMJ EGKPU RVSXJ XVBWV POSDE TEQTX OBZIK WCXLW NUOVJ MJCLLOEOFA ZENVM JILOW ZEKAZ EJAQD ILSWW ESGUG KTZGQ ZVRMN WTQSEOTKTK PBSTA MQVER MJEGL JQRTL GFJYG SPTZP GTACM OECBX SESCIYGUFP KVILL TWDKS ZODFW FWEAA PQTFS TQIRG MPMEL RYELH QSVWBAWMOS DELHM UZGPG YEKZU KWTAM ZJMLS EVJQT GLAWV OVVXH KWQILIEUYS ZWXAH HUSZO GMUZQ CIMVZ UVWIF JJHPW VXFSE TZEDF';
 
 // let v = 'TYWUR USHPO SLJNQ AYJLI FTMJY YZFPV EUZTS GAHTU WNSFW EEEVAMYFFD CZTMJ WSQEJ VWXTU QNANT MTIAW AOOJS HPPIN TYDDM VKQUFLGMLB XIXJU BQWXJ YQZJZ YMMZH DMFNQ VIAYE FLVZI ZQCSS AEEXVSFRDS DLBQT YDTFQ NIVKU ZPJFJ HUSLK LUBQV JULAB XYWCD IEOWHFTMXZ MMZHC AATFX YWGMF XYWZU QVPYF AIAFJ GEQCV KNATE MWGKXSMWNA NIUSH PFSRJ CEQEE VJXGG BLBQI MEYMR DSDHU UZXVV VGFXVJZXUI JLIRM RKZYY ASETY MYWWJ IYTMJ KFQQT ZFAQK IJFIP FSYAGQXZVK UZPHF ZCYOS LJNQE MVK';
 
@@ -6,16 +6,19 @@ let v = 'DAZFI SFSPA VQLSN PXYSZ WXALC DAFGQ UISMT PHZGA MKTTF TCCFXKFCRG GLPFE 
 
 // let v = 'QRBAI UWYOK ILBRZ XTUWL EGXSN VDXWR XMHXY FCGMW WWSME LSXUZMKMFS BNZIF YEIEG RFZRX WKUFA XQEDX DTTHY NTBRJ LHTAI KOCZXQHBND ZIGZG PXARJ EDYSJ NUMKI FLBTN HWISW NVLFM EGXAI AAWSLFMHXR SGRIG HEQTU MLGLV BRSIL AEZSG XCMHT OWHFM LWMRK HPRFBELWGF RUGPB HNBEM KBNVW HHUEA KILBN BMLHK XUGML YQKHP RFBELEJYNV WSIJB GAXGO TPMXR TXFKI WUALB RGWIE GHWHG AMEWW LTAELNUMRE UWTBL SDPRL YVRET LEEDF ROBEQ UXTHX ZYOZB XLKAC KSOHNVWXKS MAEPH IYQMM FSECH RFYPB BSQTX TPIWH GPXQD FWTAI KNNBXSIYKE TXTLV BTMQA LAGHG OTPMX RTXTH XSFYG WMVKH LOIVU ALMLDLTSYV WYNVW MQVXP XRVYA BLXDL XSMLW SUIOI IMELI SOYEB HPHNRWTVUI AKEYG WIETG WWBVM VDUMA EPAUA KXWHK MAUPA MUKHQ PWKCXEFXGW WSDDE OMLWL NKMWD FWTAM FAFEA MFZBN WIHYA LXRWK MAMIKGNGHJ UAZHM HGUAL YSULA ELYHJ BZMSI LAILH WWYIK EWAHN PMLBNNBVPJ XLBEF WRWGX KWIRH XWWGQ HRRXW IOMFY CZHZL VXNVI OYZCMYDDEY IPWXT MMSHS VHHXZ YEWNV OAOEL SMLSW KXXFX STRVI HZLEFJXDAS FIE';
 
+// let v = 'LPROZ OOGRJ ZGFLV TUKMC WFDQM PZXIJ LVRWQ XEOSZ ZHTEK UYSCRPTFCZ UHXIJ LPPTD CPRBY OSMGY TLEVD UAQMF IFMZV LVYTO QDLHXLBPLL KYCQY ODRKS ACTEU XZEVO UAQMF OSDSU BKMBJ QEORF WFQCKHKSOD INGJZ SHGVV LMSZD WWHFJ AVQGF NUWMW AOIXT CSRYC YPPTPLFUCR AVQHR RVRES QCKHM LGARF YHXZP CSNWS NCRQV GHRLR ZEDHFJVUPC XZJQC ATISQ SCGXN BALWY MAQCY OSD'
+
+// let v = 'FIIFL VZOZS VPDCA ZVFSL EMRUL BQISC XVQTS NDMFT IDGIZ ILZDMFFLVZ YMHCG DIGSL DSHEZ SIWMM XPNAN TIIRJ SFMWB XIDPS EWHAIXYWQM EXVVV DMRUK XASPF OQTUP JLNTQ WTJYQ OLFOF EOVVW WTURXDIGPT LLMFT INJYF OLKZU FXMVK CZISV AHDQQ VEVDM RTWIR MWYJIGPRFO CFUWK ZYFUQ VGZZU KYLNT MXKZY SDEMW MMXPX SJUZK NAXQQZVJSA ZICWN ERSIL BTUWJ HLUFI ZFNTQ GYMLO TARQJ MFLJL ISXMUWUZPA VXUUD MVKNT MXUGL GZFPL BQFVZ HFQTI TSNQE XVSGR DSDLBQBVVK YZOIF XNTQW LFZAX PFOCZ SHRJE ZQWJD CWQEU JYMYR FOUDQJIGFU ORFLU YAYJW MTMPC VCEFY ITNTU WYSFX AAUZI GEIZS GEQRKOCFTF IGIYN IWGLQ FSJOY QBXYW XGEXS WBUZH KZYPA SI'
+
 let kwl = 0,
-  table = [];
+  table = [],
+  v;
 
 let omni = {
   abc: [],
   eng: [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
-  // eng: [0.082, 0.014, 0.028, 0.038, 0.131, 0.029, 0.020, 0.053, 0.064, 0.001, 0.004, 0.034, 0.025, 0.071, 0.080, 0.020, 0.001, 0.068, 0.061, 0.105, 0.025, 0.009, 0.015, 0.002, 0.020, 0.01],
   // ciphertxt
   ct: null,
-
   abcInit() {
     for (let i = 97; i < 123; i++) {
       this.abc[i - 97] = String.fromCharCode(i);
@@ -26,12 +29,10 @@ let omni = {
 let patterns = {
   allF: [],
   factors: [[], []],
-
   shifts(setSize) {
     // chronologically 1.2, creates sets of length = setSize, returning each set of sets before shifting along 1 until setSize and returning that etc, since pattern repeats aren't gonna adhere to sets always sectioned from 0
     let a = [];
     let p = 0;
-
     for (let sh = 0; sh < setSize; sh++) {
       // 1st loop for shifting start of set (better data if not just sets of 3 from 0 taken but 3 from 1 etc), 2nd sets those sets in2 sets :O + p is inc to determine start, i is pos in sets
       for (let i = 0; i < v.length / setSize - 1; i++) {
@@ -41,7 +42,6 @@ let patterns = {
     }
     return a;
   },
-
   countRPs(set) {
     // chronologically 1.3, finds n counts repeats
     let occr = [];
@@ -116,7 +116,6 @@ function factor(x) {
   let few = [];
 
   while (dv < 20) {
-    // if (x % dv || dv === x / 2 || dv === few[few.length - 1]) {
     if (x % dv || dv === few[few.length - 1]) {
       dv += 1;
     } else {
@@ -158,6 +157,25 @@ let freqkey = {
 
     this.ic[0].push(kwl);
     this.ic[1].push(icsum / kwl);
+  },
+
+  icButPlain() {
+    let occr = set26();
+    let form = set26();
+
+    for (let i = 0; i < v.length; i++) {
+      occr[omni.abc.indexOf(v[i])] += 1;
+    }
+    occr.forEach((x, l) => {
+      form[l] += (x / v.length) * ((x - 1) / (v.length - 1));
+    });
+
+    let icsum = 0;
+    form.forEach((x) => {
+      icsum += x;
+    });
+
+    return icsum;
   },
 
   chiron() {
@@ -205,8 +223,8 @@ let freqkey = {
 };
 
 function keycutter() {
-  v = v.replace(/[^\w\s]|_/g, " ").replace(/\s+/g, "").toLowerCase();
-  omni.abcInit();
+  // v = v.replace(/[^\w\s]|_/g, " ").replace(/\s+/g, "").toLowerCase();
+  // omni.abcInit();
   // 1. factors of kwl
   for (let i = 3; i < 7; i++) {
     patterns.findRPs(i);
@@ -266,7 +284,7 @@ function solve() {
     }
   }
 
-  console.log(uc);
+  document.querySelector('.inp').value = uc;
 }
 
 function set26() {
@@ -278,4 +296,25 @@ function set26() {
   return arr;
 }
 
-keycutter();
+// keycutter();
+
+// boring stuff
+
+document.querySelector('.btn').addEventListener('click', function() {
+  document.querySelector('.tellkw').textContent = '';
+  omni.abcInit();
+  if (document.querySelector('.inp').value !== "") {
+    v = document.querySelector('.inp').value;
+    v = v.replace(/[^\w\s]|_/g, " ").replace(/\s+/g, "").toLowerCase();
+    if (freqkey.icButPlain() < 0.55) {
+      keycutter();
+      let rkw = '';
+      freqkey.chi.forEach((x) => {
+        rkw += `${omni.abc[x]}`;
+      });
+      document.querySelector('.tellkw').textContent = rkw;
+    } else {
+      // ciphed();
+    }
+  }
+}, false);
