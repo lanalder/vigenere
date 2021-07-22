@@ -11,14 +11,14 @@
 // let v = 'FIIFL VZOZS VPDCA ZVFSL EMRUL BQISC XVQTS NDMFT IDGIZ ILZDMFFLVZ YMHCG DIGSL DSHEZ SIWMM XPNAN TIIRJ SFMWB XIDPS EWHAIXYWQM EXVVV DMRUK XASPF OQTUP JLNTQ WTJYQ OLFOF EOVVW WTURXDIGPT LLMFT INJYF OLKZU FXMVK CZISV AHDQQ VEVDM RTWIR MWYJIGPRFO CFUWK ZYFUQ VGZZU KYLNT MXKZY SDEMW MMXPX SJUZK NAXQQZVJSA ZICWN ERSIL BTUWJ HLUFI ZFNTQ GYMLO TARQJ MFLJL ISXMUWUZPA VXUUD MVKNT MXUGL GZFPL BQFVZ HFQTI TSNQE XVSGR DSDLBQBVVK YZOIF XNTQW LFZAX PFOCZ SHRJE ZQWJD CWQEU JYMYR FOUDQJIGFU ORFLU YAYJW MTMPC VCEFY ITNTU WYSFX AAUZI GEIZS GEQRKOCFTF IGIYN IWGLQ FSJOY QBXYW XGEXS WBUZH KZYPA SI'
 
 let kwl = 0,
+  ptkwl = [],
   table = [],
-  v;
+  v,
+  of;
 
 let omni = {
   abc: [],
   eng: [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
-  // ciphertxt
-  ct: null,
   abcInit() {
     for (let i = 97; i < 123; i++) {
       this.abc[i - 97] = String.fromCharCode(i);
@@ -245,14 +245,13 @@ function keycutter() {
   kwl = freqkey.bigBoyIC[0];
   matrix();
   freqkey.chiron();
-  // console.log(freqkey.bigBoyIC, freqkey.chi);
-
   solve();
 }
 
 function matrix() {
   // chronologically 2.0, sets up a nice table of cosets at assumed kwl
   let ord = [];
+  of =  (v.length % kwl);
   for (let i = 0; i < v.length / kwl; i++) {
     ord[i] = Array.from(v.substring(i * kwl, i * kwl + kwl));
   }
@@ -264,7 +263,7 @@ function matrix() {
     }
   }
   // condition so that having found probable kwl, new table can b made for that without repeating IC process
-  if (!freqkey.bigBoyIC[0]) {
+  if (!freqkey.bigBoyIC[0] && !ptkwl.length) {
     freqkey.calcIC();
   }
 }
@@ -274,14 +273,18 @@ function solve() {
   for (let i = 0; i < kwl; i++) {
     table[i] = table[i].map((x) => {
       let og = omni.abc.indexOf(x);
-      return omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26];
+      return freqkey.chi.length ? omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26] : omni.abc[(og + ptkwl[i]) % 26];
     });
   }
-
   for (let i = 0; i < v.length / kwl; i++) {
     for (let j = 0; j < kwl; j++) {
       uc += table[j][i];
     }
+  }
+  for (let i = of; i; i--) {
+    let og = omni.abc.indexOf(v[v.length - i]);
+    console.log(of, v[v.length - i], freqkey.chi[of - i]);
+    uc += omni.abc[Math.abs(26 + (og - freqkey.chi[of - i])) % 26];
   }
 
   document.querySelector('.inp').value = uc;
@@ -303,18 +306,65 @@ function set26() {
 document.querySelector('.btn').addEventListener('click', function() {
   document.querySelector('.tellkw').textContent = '';
   omni.abcInit();
+
   if (document.querySelector('.inp').value !== "") {
     v = document.querySelector('.inp').value;
+
     v = v.replace(/[^\w\s]|_/g, " ").replace(/\s+/g, "").toLowerCase();
-    if (freqkey.icButPlain() < 0.55) {
+    if (v.length < 20) {
+      // tell them is better when longer, option 2 proceed tho
+    }
+    if (freqkey.icButPlain() < 0.055) {
       keycutter();
-      let rkw = '';
-      freqkey.chi.forEach((x) => {
-        rkw += `${omni.abc[x]}`;
-      });
-      document.querySelector('.tellkw').textContent = rkw;
+      revealKW();
     } else {
-      // ciphed();
+      ciphed();
     }
   }
+  reset();
 }, false);
+
+function ciphed() {
+  let max = Math.ceil(v.length / 25);
+  if (max < 3) {
+    max = 5;
+  } else if (max > 18) {
+    max = 12;
+  }
+  for (let i = 0; i < Math.round(Math.random() * (max - 3) + 3); i++) {
+    ptkwl[i] = Math.round(Math.random() * 25);
+  }
+
+  kwl = ptkwl.length;
+  matrix();
+  solve();
+  revealKW();
+}
+
+function revealKW() {
+  let rkw = '';
+  if (ptkwl.length) {
+    ptkwl.forEach((x) => {
+      rkw += `${omni.abc[x]}`;
+      // is temp lit necessary?
+    });
+  } else {
+    // bug here: kw shouldn't rp
+    freqkey.chi.forEach((x) => {
+      rkw += `${omni.abc[x]}`;
+    });
+  }
+  document.querySelector('.tellkw').textContent = rkw;
+}
+
+function reset() {
+  kwl = 0;
+  ptkwl = [];
+  table = [];
+  v = null;
+  patterns.allF = [];
+  patterns.factors = [[], []];
+  freqkey.ic = [[], []];
+  freqkey.chi = [];
+  freqkey.bigBoyIC = [0, 0, 0];
+}
