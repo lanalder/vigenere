@@ -19,6 +19,10 @@ let kwl = 0,
 let omni = {
   abc: [],
   eng: [8.15, 1.44, 2.76, 3.79, 13.11, 2.92, 1.99, 5.26, 6.35, 0.13, 0.42, 3.39, 2.54, 7.10, 8.00, 1.98, 0.12, 6.83, 6.10, 10.47, 2.46, 0.92, 1.54, 0.17, 1.98, 0.08],
+  // get overflow() {
+  //   let decimal = (v.length / kwl) - Math.floor(v.length / kwl);
+  //   return Math.floor(v.length * (decimal / 10));
+  // },
   abcInit() {
     for (let i = 97; i < 123; i++) {
       this.abc[i - 97] = String.fromCharCode(i);
@@ -249,45 +253,73 @@ function keycutter() {
 }
 
 function matrix() {
-  // chronologically 2.0, sets up a nice table of cosets at assumed kwl
-  let ord = [];
-  of =  (v.length % kwl);
-  for (let i = 0; i < v.length / kwl; i++) {
-    ord[i] = Array.from(v.substring(i * kwl, i * kwl + kwl));
-  }
-  // it's just sm easier 2 do this way (a string substr method thing which can create arrs from a non-linear index range?? would b nice idk)
+  // let decimal = (v.length / kwl) - Math.floor(v.length / kwl);
+  // let overflow = Math.floor(v.length * (decimal / 10));
+
+  let overflow = v.length % kwl;
+
   for (let i = 0; i < kwl; i++) {
     table[i] = [];
     for (let j = 0; j < v.length / kwl; j++) {
-      table[i].push(ord[j][i]);
+      if (j) {
+        table[i].push(v[j * kwl - (kwl - i)]);
+      }
+    }
+
+    if (overflow) {
+      table[i].push(v[v.length - overflow]);
+      console.log(v[v.length - overflow]);
+      overflow -= 1;
     }
   }
-  // condition so that having found probable kwl, new table can b made for that without repeating IC process
+
   if (!freqkey.bigBoyIC[0] && !ptkwl.length) {
     freqkey.calcIC();
   }
 }
 
 function solve() {
-  let uc = '';
+  let uc = new Array(v.length);
+  // let uc = [];
+
   for (let i = 0; i < kwl; i++) {
-    table[i] = table[i].map((x) => {
+
+    table[i] = table[i].map((x, ind) => {
       let og = omni.abc.indexOf(x);
-      return freqkey.chi.length ? omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26] : omni.abc[(og + ptkwl[i]) % 26];
+      // uc[ind] = [];
+
+      return (freqkey.chi.length
+        ? omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26]
+        : omni.abc[(og + ptkwl[i]) % 26]);
     });
-  }
-  for (let i = 0; i < v.length / kwl; i++) {
-    for (let j = 0; j < kwl; j++) {
-      uc += table[j][i];
-    }
-  }
-  for (let i = of; i; i--) {
-    let og = omni.abc.indexOf(v[v.length - i]);
-    console.log(of, v[v.length - i], freqkey.chi[of - i]);
-    uc += omni.abc[Math.abs(26 + (og - freqkey.chi[of - i])) % 26];
+
+    uc[i * kwl + (kwl + i)] = table[i][v.length / (i * kwl)];
+
+    // table[i].forEach((x, ind) => {
+    //   uc[ind * i] = x;
+    // });
+
   }
 
-  document.querySelector('.inp').value = uc;
+  console.log(uc);
+
+
+  // uc = uc.slice(0, -(kwl - v.length % kwl));
+
+
+  // console.log(v.length, table);
+  //
+  // let overflow = v.length % kwl;
+
+  // for (let i = 0; i < v.length / kwl; i++) {
+  //   table.forEach((x) => {
+  //     uc += x[i];
+  //   });
+  // }
+
+
+
+  // document.querySelector('.inp').value = uc;
 }
 
 function set26() {
