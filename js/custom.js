@@ -253,14 +253,15 @@ function keycutter() {
 }
 
 function matrix() {
-  // let decimal = (v.length / kwl) - Math.floor(v.length / kwl);
-  // let overflow = Math.floor(v.length * (decimal / 10));
-
+  // unlikely that text will nicely divide into kwl
   let overflow = v.length % kwl;
 
   for (let i = 0; i < kwl; i++) {
+    // table organised into rows of cosets
     table[i] = [];
-    for (let j = 0; j < v.length / kwl; j++) {
+
+    for (let j = 1; j < v.length / kwl; j++) {
+      // sometimes the
       if (j) {
         table[i].push(v[j * kwl - (kwl - i)]);
       }
@@ -279,51 +280,31 @@ function matrix() {
 }
 
 function solve() {
-  let uc = new Array(v.length);
-  // let uc = [];
+  let unciphd = new Array(v.length);
 
   for (let i = 0; i < kwl; i++) {
 
+    // subbing in the de/ciphered letters
     table[i] = table[i].map((x, ind) => {
       let og = omni.abc.indexOf(x);
-      // uc[ind] = [];
 
+      // if there are vals in .chi, decipher rather than cipher; deciphering moves the alphabet left while cipher goes right
       return (freqkey.chi.length
         ? omni.abc[Math.abs(26 + (og - freqkey.chi[i])) % 26]
         : omni.abc[(og + ptkwl[i]) % 26]);
     });
 
-    uc[i * kwl + (kwl + i)] = table[i][v.length / (i * kwl)];
-
-    // table[i].forEach((x, ind) => {
-    //   uc[ind * i] = x;
-    // });
-
+    // table has rows of cosets, while new text needs to be ordered according to columns; second ind (ind of coset rows) of table is that many kwls away from 0, then + i for offset from start of kw
+    table[i].forEach((x, ind) => {
+      unciphd[kwl * ind + i] = x;
+    });
   }
 
-  console.log(uc);
-
-
-  // uc = uc.slice(0, -(kwl - v.length % kwl));
-
-
-  // console.log(v.length, table);
-  //
-  // let overflow = v.length % kwl;
-
-  // for (let i = 0; i < v.length / kwl; i++) {
-  //   table.forEach((x) => {
-  //     uc += x[i];
-  //   });
-  // }
-
-
-
-  // document.querySelector('.inp').value = uc;
+  document.querySelector('.inp').value = unciphd.join(' ');
 }
 
 function set26() {
-  // this needs 2 b done a lot, init arrays with 26 zeroes 2 stand for whatever number relevant to whatever index, where ind represents a letter
+  // ind = letter, for counting occurances etc.
   let arr = new Array(26);
   for (let i = 0; i < 26; i++) {
     arr[i] = 0;
@@ -331,9 +312,7 @@ function set26() {
   return arr;
 }
 
-// keycutter();
-
-// boring stuff
+// dom + ciphering stuff
 
 document.querySelector('.btn').addEventListener('click', function() {
   document.querySelector('.tellkw').textContent = '';
