@@ -1,12 +1,11 @@
 body {
   background-color: #18171d;
-  overflow: hidden;
 }
 .mr {
   position: absolute;
-  top: 20vh;
-  left: 30vw;
-  /* transform: translate(-30%, -25%); */
+  top: 25%;
+  left: 30%;
+  transform: translate(-30%, -25%);
   width: 200px;
   height: 319px;
 }
@@ -28,43 +27,42 @@ body {
   color: white;
   height: 505px;
   position: absolute;
-  top: 28vh;
-  left: 10vw;
-  /* transform: translate(-10%, -40%); */
+  top: 40%;
+  left: 10%;
+  transform: translate(-10%, -40%);
 }
 .area {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 10vh;
-  left: 50vw;
-  /* transform: translate(-75%, -25%); */
+  top: 25%;
+  left: 75%;
+  transform: translate(-75%, -25%);
 }
 textarea {
   appearance: none;
   box-shadow: -3px -3px 0px 2px #7F7E68, 0px 0px 0px 5px #DACEB8;
   background-color: white;
   margin: 2vh 2vw 2vh 2vw;
-  width: 32rem;
-  height: 20rem;
+  width: 500px;
+  height: 300px;
 }
 button {
   box-shadow: -2px -2px 0px 1px #7F7E68, -1px -1px 0px 2px #DACEB8;
   background-color: #fffde0;
   margin: 2vh 2vw 2vh 2vw;
-  width: 7rem;
-  height: 2rem;
+  width: 100px;
+  height: 45px;
   cursor: pointer;
   align-self: center;
 }
 .kw {
-  position: relative;
-  z-index: -5;
-  margin-top: 65vh;
-  margin-left: 55vw;
+  position: absolute;
+  z-index: -2;
+  left: 50%;
+  top: 70%;
 }
 .tellkw {
-  z-index: 2;
   height: 100px;
   position: absolute;
   top: 2.4rem;
